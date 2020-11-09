@@ -50,7 +50,7 @@ def timerCallBack(event):
     global error
     global old_error
     
-    
+    '''
     yaw = getAngle(odom)
     setpoint = -45
     error = (setpoint - yaw)
@@ -66,7 +66,7 @@ def timerCallBack(event):
     position = odom.pose.pose.position
     dist = setpoint[0] - position.x #math.sqrt((setpoint[0] - position.x)**2 + (setpoint[1] - position.y) **2)
     error = dist
-    
+    '''
     
     setpoint = 0.5
     
