@@ -80,7 +80,7 @@ def timerCallBack(event):
         I = I + error * ki
         D = (error - old_error)*kd
         control = P
-        error = old_error
+        old_error = error
         
         if control > 1:
             control = 1
@@ -98,6 +98,6 @@ pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 odom_sub = rospy.Subscriber('/odom', Odometry, odomCallBack)
 scan_sub = rospy.Subscriber('/scan', LaserScan, scanCallBack)
 
-timer = rospy.Timer(rospy.Duration(Ts), timerCallBack)
+timer = rospy.Timer(rospy.Duration(1/Ts), timerCallBack)
 
 rospy.spin()
