@@ -15,7 +15,6 @@ setpoint = 0
 error = 0
 old_error = 0
 
-Fs = 1/(((2+0+1+7+0+1+3+1+0+6)+(2+0+1+6+0+0+1+1+0+0)+(2+0+1+7+0+0+6+0+7+7)+(2+0+1+8+0+1+9+0+2+4))/4);
 
 odom = Odometry()
 scan = LaserScan()
@@ -98,6 +97,8 @@ pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 odom_sub = rospy.Subscriber('/odom', Odometry, odomCallBack)
 scan_sub = rospy.Subscriber('/scan', LaserScan, scanCallBack)
 
-timer = rospy.Timer(rospy.Duration(Fs), timerCallBack)
+# 1/(((2+0+1+7+0+1+3+1+0+6)+(2+0+1+6+0+0+1+1+0+0)+(2+0+1+7+0+0+6+0+7+7)+(2+0+1+8+0+1+9+0+2+4))/4);
+
+timer = rospy.Timer(rospy.Duration(0.04494382022), timerCallBack)
 
 rospy.spin()
