@@ -5,16 +5,12 @@ from sensor_msgs.msg import LaserScan
 import tf
 import math
 
-
-kp = 0.01
-ki = 1
-kd = 0.1
-
 I = 0
-setpoint = 0
-error = 0
 old_error = 0
 
+kp = 1
+ki = 2
+kd = 3
 
 odom = Odometry()
 scan = LaserScan()
@@ -41,15 +37,9 @@ def scanCallBack(msg):
 
 # TIMER - Control Loop ----------------------------------------------
 def timerCallBack(event):
-    global kp
-    global ki
-    global kd
     global I
-    global process_var
-    global error
     global old_error
-    
-    '''
+    """
     yaw = getAngle(odom)
     setpoint = -45
     error = (setpoint - yaw)
@@ -59,13 +49,13 @@ def timerCallBack(event):
             error += 360 
         else:
             error -= 360
-
-    
+    """
+    """
     setpoint = (-1,-1)
     position = odom.pose.pose.position
     dist = setpoint[0] - position.x #math.sqrt((setpoint[0] - position.x)**2 + (setpoint[1] - position.y) **2)
     error = dist
-    '''
+    """
     
     setpoint = 0.5
     
@@ -78,9 +68,8 @@ def timerCallBack(event):
         P = kp*error
         I = I + error * ki
         D = (error - old_error)*kd
-        control = P
+        control = P+I+D
         old_error = error
-        
         if control > 1:
             control = 1
         elif control < -1:
@@ -97,8 +86,6 @@ pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 odom_sub = rospy.Subscriber('/odom', Odometry, odomCallBack)
 scan_sub = rospy.Subscriber('/scan', LaserScan, scanCallBack)
 
-# 1/(((2+0+1+7+0+1+3+1+0+6)+(2+0+1+6+0+0+1+1+0+0)+(2+0+1+7+0+0+6+0+7+7)+(2+0+1+8+0+1+9+0+2+4))/4);
-
-timer = rospy.Timer(rospy.Duration(0.04494382022), timerCallBack)
+timer = rospy.Timer(rospy.Duration(0.05), timerCallBack)
 
 rospy.spin()
