@@ -66,8 +66,10 @@ def timerCallBack(event):
         error = -(setpoint - read)
         
         P = kp*error
-        I = I + error * ki
-        D = (error - old_error)*kd
+        #I = I + error * ki
+        #D = (error - old_error)*kd
+        I = 0;
+        D = 0;
         control = P+I+D
         old_error = error
         if control > 0.1:
