@@ -9,8 +9,8 @@ I = 0
 old_error = 0
 
 kp = 1
-ki = 2
-kd = 3
+ki = 0.01
+kd = 1
 
 odom = Odometry()
 scan = LaserScan()
@@ -70,10 +70,10 @@ def timerCallBack(event):
         D = (error - old_error)*kd
         control = P+I+D
         old_error = error
-        if control > 1:
-            control = 1
-        elif control < -1:
-            control = -1
+        if control > 0.1:
+            control = 0.1
+        elif control < -0.1:
+            control = -0.1
     else:
         control = 0        
     
@@ -85,7 +85,8 @@ def timerCallBack(event):
 pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 odom_sub = rospy.Subscriber('/odom', Odometry, odomCallBack)
 scan_sub = rospy.Subscriber('/scan', LaserScan, scanCallBack)
+# 1/(((2+0+1+7+0+1+3+1+0+6)+(2+0+1+6+0+0+1+1+0+0)+(2+0+1+7+0+0+6+0+7+7)+(2+0+1+8+0+1+9+0+2+4))/4);
 
-timer = rospy.Timer(rospy.Duration(0.05), timerCallBack)
+timer = rospy.Timer(rospy.Duration(0.04494382022), timerCallBack)
 
 rospy.spin()
